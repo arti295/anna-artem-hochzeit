@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anna &amp; Artem — Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Marck+Script&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F1EA;
+    --paper: #FFF9F0;
+    --sand: #D9C7A0;
+    --gold: #C9A14B;
+    --marine: #355C7D;
+    --petrol: #5E7F85;
+    --wax: #8A1C2B;
+    --ink: #4a3f33;
+    --accent: #9c6b2e;
+    --envelope: #f3e6cf;
+    --envelope-dark: #e3cfa2;
+    --wood-dark: #2e2018;
+    --wood: #4a3220;
+    --wood-light: #6b4b31;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'EB Garamond', 'PT Serif', serif;
+    overflow-x: hidden;
+  }
+  body.locked { overflow: hidden; height: 100vh; }
+  h1, h2, .script { font-family: 'Great Vibes', 'Marck Script', cursive; font-weight: 400; }
+  h2.heading { font-family: 'Cinzel', 'PT Serif', serif; }
+
+  /* ---- Paper texture (shared) ---- */
+  .paper-texture {
+    background-color: var(--paper);
+    background-image: url('assets/tex-paper.jpg');
+    background-size: 580px 580px;
+    background-repeat: repeat;
+    background-blend-mode: multiply;
+  }
+
+  /* ---- Language switch ---- */
+  #lang-switch {
+    position: fixed; top: 14px; right: 14px; z-index: 600;
+    display: flex; gap: 6px;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(4px);
+    padding: 6px; border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  #lang-switch button {
+    border: none; background: transparent;
+    color: var(--marine);
+    font-family: 'EB Garamond', serif; font-size: 13px;
+    letter-spacing: 0.5px; padding: 6px 12px;
+    border-radius: 14px; cursor: pointer;
+    transition: background .25s, color .25s;
+  }
+  #lang-switch button.active { background: var(--marine); color: #fff; }
+
+  /* ---- Envelope scene: old oak table ---- */
+  #envelope-scene {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background-color: var(--wood);
+    background-image: url('assets/tex-wood.jpg');
+    background-size: 100% 540px;
+    background-repeat: repeat-y;
+    z-index: 400;
+    transition: opacity 0.8s ease 1.2s, visibility 0.8s ease 1.2s;
+  }
+  #envelope-scene::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 50% 38%, transparent 30%, rgba(20,12,6,0.55) 100%),
+      rgba(30,18,10,0.28);
+  }
+  #envelope-scene.done { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .scene-kicker {
+    color: var(--sand);
+    font-size: 26px;
+    margin-bottom: 6px;
+    opacity: .85;
+    transition: opacity 0.3s;
+  }
+  #envelope-scene.opening .scene-kicker { opacity: 0; }
+
+  .hint {
+    margin-top: 26px; font-size: 15px;
+    color: var(--sand); letter-spacing: 0.5px;
+    animation: pulse 2.2s ease-in-out infinite;
+    transition: opacity 0.3s;
+  }
+  #envelope-scene.opening .hint { opacity: 0; }
+  @keyframes pulse { 0%,100%{opacity:.55;} 50%{opacity:1;} }
+
+  /* ---- Table props (decorative, non-interactive) ---- */
+  .prop {
+    position: absolute; pointer-events: none;
+    filter: drop-shadow(0 2px 2px rgba(20,10,0,0.35)) drop-shadow(0 8px 10px rgba(20,10,0,0.3));
+  }
+  .prop-map    { left: 50%; top: 50%; width: 300px; transform: translate(-52%,-46%) rotate(-5deg); opacity: .4; z-index: 0; }
+  .prop-shell  { left: 8%; bottom: 11%; width: 96px; z-index: 2; }
+  .prop-shell2 { left: 6%; bottom: 4%; width: 62px; z-index: 2; transform: rotate(-8deg); }
+  .prop-starfish { right: 9%; bottom: 16%; width: 92px; transform: rotate(8deg); z-index: 2; }
+  .prop-compass { left: 10%; top: 14%; width: 96px; z-index: 2; }
+  .prop-sprig  { right: 6%; top: 8%; width: 150px; z-index: 2; }
+
+  /* ---- Envelope ---- */
+  #envelope {
+    position: relative; width: 300px; height: 200px;
+    cursor: pointer;
+    perspective: 700px;
+    z-index: 3;
+    transform: scale(1.55);
+    margin: 55px 0;
+  }
+  .env-body {
+    position: absolute; inset: 0;
+    background-color: var(--envelope);
+    background-image: url('assets/tex-paper.jpg');
+    background-size: 480px auto;
+    background-blend-mode: multiply;
+    border-radius: 6px;
+    box-shadow: 0 18px 40px rgba(40,25,10,0.35);
+    overflow: hidden;
+  }
+  .env-body::before {
+    content: ""; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 50%;
+    background: linear-gradient(120deg, var(--envelope-dark), transparent 70%);
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+    opacity: .6;
+  }
+  .env-body::after {
+    content: ""; position: absolute;
+    right: 0; top: 0; bottom: 0; width: 50%;
+    background: linear-gradient(240deg, var(--envelope-dark), transparent 70%);
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+    opacity: .6;
+  }
+  .flap {
+    position: absolute; top: 0; left: 0; right: 0; height: 110px;
+    background: var(--envelope-dark);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transition: transform 0.9s cubic-bezier(.6,-0.2,.4,1.3);
+    z-index: 3;
+    box-shadow: 0 4px 10px rgba(60,40,15,0.25);
+  }
+  #envelope-scene.opening .flap { transform: rotateX(175deg); }
+
+  .seal {
+    position: absolute; top: 70px; left: 50%;
+    width: 58px; height: 55px; margin-left: -29px;
+    background-image: url('assets/tex-wax.png');
+    background-size: contain; background-repeat: no-repeat; background-position: center;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
+    z-index: 4;
+    display: flex; align-items: center; justify-content: center;
+    color: #f3e2b8;
+    font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 1.5px;
+    transition: opacity .4s, transform .4s, filter .4s;
+    pointer-events: none;
+  }
+  #envelope:hover .seal { filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45)) brightness(1.12); }
+  #envelope-scene.opening .seal { opacity: 0; transform: scale(0.4); }
+
+  /* Wax crumbs — appear briefly while the seal breaks */
+  .wax-crumb {
+    position: absolute; top: 96px; left: 50%; width: 4px; height: 4px;
+    background: var(--wax); border-radius: 1px; opacity: 0; z-index: 4;
+    pointer-events: none;
+  }
+  .crumb-1 { margin-left: -14px; }
+  .crumb-2 { margin-left: 2px; }
+  .crumb-3 { margin-left: -3px; }
+  #envelope-scene.opening .wax-crumb { animation: crumbFall .9s ease forwards; }
+  #envelope-scene.opening .crumb-2 { animation-delay: .05s; }
+  #envelope-scene.opening .crumb-3 { animation-delay: .1s; }
+  @keyframes crumbFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(46px) rotate(200deg); }
+  }
+
+  /* Address printed directly on the envelope paper (no background box) */
+  .env-preview {
+    position: absolute; bottom: 8px; left: 50%;
+    width: 80%; height: 60%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-end;
+    padding-bottom: 14px;
+    pointer-events: none;
+  }
+  .env-preview-label {
+    font-size: 10px; color: var(--petrol);
+    letter-spacing: 2px; text-transform: lowercase;
+  }
+  .env-preview-names {
+    font-family: 'Great Vibes', 'Marck Script', cursive;
+    font-size: 22px; color: var(--accent);
+    margin-top: 4px;
+  }
+
+  /* ---- Invite card — separate from scene, won't fade with it ---- */
+  #invite-card {
+    position: fixed; inset: 0; z-index: 450;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: radial-gradient(circle at 50% 20%, #efe6d4, var(--bg) 72%);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #invite-card.visible { opacity: 1; visibility: visible; pointer-events: auto; }
+  #invite-card.hiding {
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+  }
+
+  .invite-inner {
+    border-radius: 10px;
+    padding: 44px 38px;
+    max-width: min(560px, 90vw);
+    width: 100%; text-align: center;
+    box-shadow: 0 30px 60px rgba(50,35,15,0.3);
+    transform: scale(0.35);
+    transition: transform 0.85s cubic-bezier(.3,0,.2,1.15) 0.35s;
+  }
+  #invite-card.visible .invite-inner { transform: scale(1); }
+
+  .invite-inner .mini {
+    font-size: 14px; color: var(--petrol); letter-spacing: 1.5px;
+  }
+  .invite-inner h1.script {
+    font-size: 50px; color: var(--accent); margin: 10px 0 4px;
+  }
+  .invite-inner .date-line {
+    font-size: 19px; letter-spacing: 1px; color: var(--ink); margin-top: 4px;
+  }
+  .invite-inner .quote {
+    font-family: 'Great Vibes', 'Marck Script', cursive;
+    font-size: 23px; color: var(--petrol);
+    line-height: 1.5; margin: 20px 0 0;
+  }
+  .scroll-cue {
+    margin-top: 28px; font-size: 13px; color: var(--petrol);
+    letter-spacing: 0.5px;
+    opacity: 0; animation: fadeInCue 0.5s ease 2s forwards;
+  }
+  @keyframes fadeInCue { to { opacity: 0.7; } }
+
+  /* ---- Scrollable pages ---- */
+  #pages { position: relative; z-index: 10; }
+  #pages::before {
+    content: ""; position: fixed; inset: 0; z-index: -1;
+    background-color: var(--bg);
+    background-image: url('assets/tex-wood.jpg');
+    background-size: 100% 780px;
+    background-repeat: repeat-y;
+    filter: brightness(1.7) saturate(0.45) blur(3px);
+  }
+  .page {
+    min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 60px 20px 90px;
+  }
+  .page-inner {
+    position: relative;
+    max-width: 560px; width: 100%;
+    border-radius: 14px; padding: 44px 34px;
+    box-shadow: 0 18px 40px rgba(60,45,25,0.15);
+    text-align: center;
+  }
+  .page-inner::before, .page-inner::after {
+    content: ""; position: absolute; inset: 0;
+    background: var(--paper); border-radius: 14px; z-index: -1;
+  }
+  .page-inner::before { transform: rotate(-1.3deg) translateY(4px); opacity: .7; }
+  .page-inner::after  { transform: rotate(1deg) translateY(6px); opacity: .45; }
+  .page:nth-of-type(even) .page-inner { transform: rotate(-0.4deg); }
+  .page:nth-of-type(odd)  .page-inner { transform: rotate(0.4deg); }
+
+  .page h2.heading {
+    color: var(--marine); font-size: 30px; margin: 0 0 10px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    position: relative; display: inline-block;
+  }
+  .page h2.heading::after {
+    content: ""; display: block; width: 46px; height: 2px;
+    background: var(--gold); margin: 12px auto 0;
+  }
+  .quote { font-family: 'Great Vibes', 'Marck Script', cursive; font-size: 24px; color: var(--petrol); line-height: 1.5; margin: 22px 0 6px; }
+  .cliff-illustration { width: 100%; max-width: 420px; height: auto; margin: 0 auto 20px; display: block; }
+  .info-line { font-size: 18px; margin: 8px 0; }
+  .info-line b { color: var(--gold); }
+  .note { margin-top: 18px; font-size: 15px; color: var(--petrol); font-style: italic; }
+  .timeline { text-align: left; margin-top: 10px; }
+  .day { margin-bottom: 22px; border-left: 2px solid var(--sand); padding-left: 16px; }
+  .day .day-title { font-size: 19px; color: var(--marine); margin-bottom: 6px; font-weight: 700; }
+  .day .events { font-size: 15.5px; line-height: 1.7; }
+  .day .events .time { color: var(--gold); font-weight: 700; margin-right: 6px; }
+  .signature { margin-top: 26px; font-family: 'Great Vibes', 'Marck Script', cursive; font-size: 28px; color: var(--accent); }
+  .placeholder-tag {
+    display: inline-block; margin-top: 14px; font-size: 12px;
+    color: var(--petrol); letter-spacing: 1px; opacity: .6; font-style: italic;
+  }
+  .swatches { display: flex; gap: 10px; justify-content: center; margin: 18px 0 6px; }
+  .swatch { width: 34px; height: 34px; border-radius: 6px; box-shadow: 0 2px 6px rgba(60,45,25,0.2); }
+
+  @media (max-width: 480px) {
+    #envelope { transform: scale(1.3); margin: 32px 0; }
+    .page-inner { padding: 30px 20px; }
+    .page h2.heading { font-size: 25px; }
+    .invite-inner { padding: 30px 22px; }
+    .invite-inner h1.script { font-size: 38px; }
+    .prop, .prop-map { display: none; }
+  }
+</style>
+</head>
+<body class="locked">
+
+<div id="lang-switch">
+  <button data-lang="ru" class="active">RU</button>
+  <button data-lang="de">DE</button>
+  <button data-lang="en">EN</button>
+</div>
+
+<!-- Envelope scene — the envelope on an old oak table, fades out independently -->
+<div id="envelope-scene">
+
+  <!-- Nautical map corner, peeking out from under the envelope -->
+  <svg class="prop prop-map" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="292" height="192" rx="4" fill="#e7d9b8" stroke="#c9a14b" stroke-width="1" opacity="0.9"/>
+    <circle cx="150" cy="100" r="46" fill="none" stroke="#355C7D" stroke-width="1"/>
+    <line x1="150" y1="40" x2="150" y2="160" stroke="#355C7D" stroke-width="1"/>
+    <line x1="90" y1="100" x2="210" y2="100" stroke="#355C7D" stroke-width="1"/>
+    <polygon points="150,58 158,100 150,142 142,100" fill="#8A1C2B" opacity="0.7"/>
+    <path d="M20,170 Q80,150 140,168 T280,160" fill="none" stroke="#5E7F85" stroke-width="1" opacity="0.6"/>
+  </svg>
+
+  <div class="scene-kicker script" data-i18n="envelope_address">Для наших дорогих гостей</div>
+
+  <div id="envelope">
+    <div class="flap"></div>
+    <div class="env-body"></div>
+    <div class="seal">A&nbsp;•&nbsp;A</div>
+    <div class="wax-crumb crumb-1"></div>
+    <div class="wax-crumb crumb-2"></div>
+    <div class="wax-crumb crumb-3"></div>
+    <div class="env-preview">
+      <span class="env-preview-label" data-i18n="mini_top">свадьба</span>
+      <span class="env-preview-names">Anna &amp; Artem</span>
+    </div>
+  </div>
+  <div class="hint" data-i18n="open_hint">Нажмите на конверт, чтобы открыть</div>
+
+  <!-- Table props -->
+  <img class="prop prop-shell" src="assets/prop-shell.png" alt="">
+  <img class="prop prop-shell2" src="assets/prop-shell2.png" alt="">
+  <img class="prop prop-starfish" src="assets/prop-starfish.png" alt="">
+  <img class="prop prop-compass" src="assets/prop-compass.png" alt="">
+  <img class="prop prop-sprig" src="assets/prop-sprig.png" alt="">
+
+</div>
+
+<!-- Invitation card — body-level fixed, survives the scene fade -->
+<div id="invite-card">
+  <div class="invite-inner paper-texture">
+    <div class="mini" data-i18n="p1_subtitle">приглашают вас на свою свадьбу</div>
+    <h1 class="script">Anna &amp; Artem</h1>
+    <div class="date-line" data-i18n="p1_date">1 сентября 2026</div>
+    <div class="quote" data-i18n="p1_quote">«Будьте с нами на краю земли, когда мы скажем друг другу «да»»</div>
+    <div class="scroll-cue" data-i18n="scroll_cue">↓ листайте вниз</div>
+  </div>
+</div>
+
+<!-- Scrollable pages (start at top, hidden behind invite card until user scrolls) -->
+<div id="pages">
+
+  <section class="page" id="page-story">
+    <div class="page-inner paper-texture">
+      <svg class="cliff-illustration" viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,110 Q50,90 100,108 T200,105 T300,112 T400,102" fill="none" stroke="#5E7F85" stroke-width="2" opacity="0.6"/>
+        <path d="M0,122 Q50,104 100,120 T200,118 T300,124 T400,116" fill="none" stroke="#D9C7A0" stroke-width="2" opacity="0.7"/>
+        <g transform="translate(200,50)">
+          <circle r="26" fill="none" stroke="#355C7D" stroke-width="1"/>
+          <line x1="0" y1="-26" x2="0" y2="26" stroke="#355C7D" stroke-width="0.7"/>
+          <line x1="-26" y1="0" x2="26" y2="0" stroke="#355C7D" stroke-width="0.7"/>
+          <polygon points="0,-14 5,0 0,14 -5,0" fill="#8A1C2B"/>
+        </g>
+      </svg>
+      <h2 class="heading" data-i18n="p_story_heading">Наша история</h2>
+      <p style="font-size:17px; line-height:1.7;" data-i18n="p_story_text">Здесь будет история нашей любви — как мы встретились, полюбили друг друга и решили сказать «да» на краю земли.</p>
+      <span class="placeholder-tag" data-i18n="placeholder_tag">текст появится позже</span>
+    </div>
+  </section>
+
+  <section class="page" id="page-location">
+    <div class="page-inner paper-texture">
+      <svg class="cliff-illustration" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="400" height="180" fill="none"/>
+        <path d="M0,140 L60,120 L110,150 L170,90 L230,140 L290,70 L340,130 L400,110 L400,180 L0,180 Z" fill="#F5F1EA" stroke="#D9C7A0" stroke-width="2"/>
+        <rect x="255" y="35" width="22" height="40" fill="#e7d9b8" stroke="#9c6b2e" stroke-width="1.5"/>
+        <polygon points="266,10 245,35 287,35" fill="#C9A14B" stroke="#9c6b2e" stroke-width="1.5"/>
+        <rect x="263" y="50" width="6" height="14" fill="#9c6b2e"/>
+        <line x1="266" y1="10" x2="266" y2="0" stroke="#9c6b2e" stroke-width="2"/>
+        <path d="M0,150 Q100,175 200,150 T400,150" fill="none" stroke="#5E7F85" stroke-width="2" opacity="0.6"/>
+        <path d="M40,45 q6,-6 12,0" fill="none" stroke="#355C7D" stroke-width="1.4" opacity="0.6"/>
+        <path d="M330,30 q6,-6 12,0" fill="none" stroke="#355C7D" stroke-width="1.4" opacity="0.6"/>
+      </svg>
+      <h2 class="heading" data-i18n="p2_heading">Место и время</h2>
+      <div class="info-line"><b data-i18n="p2_church">Højerup Gamle Kirke</b></div>
+      <div class="info-line" data-i18n="p2_location">Stevns Klint, Дания</div>
+      <div class="info-line" data-i18n="p2_time1"><b>10:50</b> — церемония</div>
+      <div class="info-line" data-i18n="p2_time2">Сбор у церкви: 10:00</div>
+      <div class="note" data-i18n="p2_note">Старая церковь стоит прямо на краю знаменитых меловых скал Stevns Klint.</div>
+    </div>
+  </section>
+
+  <section class="page" id="page-schedule">
+    <div class="page-inner paper-texture">
+      <h2 class="heading" data-i18n="p3_heading">Программа дней</h2>
+      <div class="timeline">
+        <div class="day">
+          <div class="day-title" data-i18n="p3_d1_title">30 августа, воскресенье</div>
+          <div class="events" data-i18n="p3_d1_text">Приезд, размещение</div>
+        </div>
+        <div class="day">
+          <div class="day-title" data-i18n="p3_d2_title">31 августа, понедельник</div>
+          <div class="events" data-i18n="p3_d2_text">Свободное время, совместные прогулки и знакомство с окрестностями</div>
+        </div>
+        <div class="day">
+          <div class="day-title" data-i18n="p3_d3_title">1 сентября, вторник — день свадьбы</div>
+          <div class="events">
+            <div><span class="time">10:00</span><span data-i18n="p3_d3_e1">отправление к церкви</span></div>
+            <div><span class="time">10:50</span><span data-i18n="p3_d3_e2">церемония в Højerup Gamle Kirke</span></div>
+            <div><span class="time">14:00</span><span data-i18n="p3_d3_e3">праздничный ужин в ресторане Café Algade, Store Heddinge</span></div>
+            <div><span class="time" data-i18n="p3_d3_e4_time">вечером</span><span data-i18n="p3_d3_e4"> продолжение торжества</span></div>
+          </div>
+        </div>
+        <div class="day">
+          <div class="day-title" data-i18n="p3_d4_title">2 сентября, среда</div>
+          <div class="events" data-i18n="p3_d4_text">Отъезд</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-dresscode">
+    <div class="page-inner paper-texture">
+      <img src="assets/prop-shell2.png" alt="" style="width:90px; height:auto; margin:0 auto 12px; display:block; filter: drop-shadow(0 4px 6px rgba(60,45,25,0.25));">
+      <h2 class="heading" data-i18n="p_dress_heading">Дресс-код</h2>
+      <p style="font-size:17px; line-height:1.7;" data-i18n="p_dress_text">Мы будем рады видеть вас в лёгких тканях природных оттенков — как на морском побережье.</p>
+      <div class="swatches">
+        <span class="swatch" style="background:#D9C7A0;"></span>
+        <span class="swatch" style="background:#C9A14B;"></span>
+        <span class="swatch" style="background:#5E7F85;"></span>
+        <span class="swatch" style="background:#355C7D;"></span>
+        <span class="swatch" style="background:#FFF9F0; border:1px solid #d9c7a0;"></span>
+      </div>
+      <span class="placeholder-tag" data-i18n="placeholder_tag">текст появится позже</span>
+    </div>
+  </section>
+
+  <section class="page" id="page-closing">
+    <div class="page-inner paper-texture">
+      <h2 class="heading" data-i18n="p4_heading">Ждём встречи</h2>
+      <p data-i18n="p4_text" style="font-size:17px; line-height:1.7;">Для нас очень важно разделить этот день с тобой. Спасибо, что будешь рядом — до встречи на краю земли!</p>
+      <div class="signature" data-i18n="p4_signature">С любовью, Анна и Артём</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const translations = {
+  ru: {
+    envelope_address: "Для наших дорогих гостей",
+    mini_top: "свадьба",
+    open_hint: "Нажмите на конверт, чтобы открыть",
+    p1_subtitle: "приглашают вас на свою свадьбу",
+    p1_date: "1 сентября 2026",
+    p1_quote: "«Будьте с нами на краю земли, когда мы скажем друг другу «да»»",
+    scroll_cue: "↓ листайте вниз",
+    p_story_heading: "Наша история",
+    p_story_text: "Здесь будет история нашей любви — как мы встретились, полюбили друг друга и решили сказать «да» на краю земли.",
+    p2_heading: "Место и время",
+    p2_church: "Højerup Gamle Kirke",
+    p2_location: "Stevns Klint, Дания",
+    p2_time1: "<b>10:50</b> — церемония",
+    p2_time2: "Сбор у церкви: 10:00",
+    p2_note: "Старая церковь стоит прямо на краю знаменитых меловых скал Stevns Klint.",
+    p3_heading: "Программа дней",
+    p3_d1_title: "30 августа, воскресенье",
+    p3_d1_text: "Приезд, размещение",
+    p3_d2_title: "31 августа, понедельник",
+    p3_d2_text: "Свободное время, совместные прогулки и знакомство с окрестностями",
+    p3_d3_title: "1 сентября, вторник — день свадьбы",
+    p3_d3_e1: "отправление к церкви",
+    p3_d3_e2: "церемония в Højerup Gamle Kirke",
+    p3_d3_e3: "праздничный ужин в ресторане Café Algade, Store Heddinge",
+    p3_d3_e4_time: "вечером",
+    p3_d3_e4: " продолжение торжества",
+    p3_d4_title: "2 сентября, среда",
+    p3_d4_text: "Отъезд",
+    p_dress_heading: "Дресс-код",
+    p_dress_text: "Мы будем рады видеть вас в лёгких тканях природных оттенков — как на морском побережье.",
+    placeholder_tag: "текст появится позже",
+    p4_heading: "Ждём встречи",
+    p4_text: "Для нас очень важно разделить этот день с тобой. Спасибо, что будешь рядом — до встречи на краю земли!",
+    p4_signature: "С любовью, Анна и Артём"
+  },
+  de: {
+    envelope_address: "Für unsere liebsten Gäste",
+    mini_top: "Hochzeit",
+    open_hint: "Zum Öffnen auf den Umschlag klicken",
+    p1_subtitle: "laden dich herzlich zu ihrer Hochzeit ein",
+    p1_date: "1. September 2026",
+    p1_quote: 'Seid mit uns am Rande der Welt, wenn wir uns das Ja-Wort geben',
+    scroll_cue: "↓ nach unten scrollen",
+    p_story_heading: "Unsere Geschichte",
+    p_story_text: "Hier wird eure Geschichte stehen — wie ihr euch kennengelernt, verliebt und entschieden habt, am Rande der Welt „Ja“ zueinander zu sagen.",
+    p2_heading: "Ort und Zeit",
+    p2_church: "Højerup Gamle Kirke",
+    p2_location: "Stevns Klint, Dänemark",
+    p2_time1: "<b>10:50 Uhr</b> — Trauung",
+    p2_time2: "Abfahrt zur Kirche: 10:00 Uhr",
+    p2_note: "Die alte Kirchenruine liegt direkt an den berühmten Kreidefelsen von Stevns Klint.",
+    p3_heading: "Ablauf der Tage",
+    p3_d1_title: "30. August, Sonntag",
+    p3_d1_text: "Anreise, Ankunft in der Unterkunft",
+    p3_d2_title: "31. August, Montag",
+    p3_d2_text: "Gemeinsame Zeit, Ausflüge und die Umgebung entdecken",
+    p3_d3_title: "1. September, Dienstag — Hochzeitstag",
+    p3_d3_e1: "Abfahrt zur Kirche",
+    p3_d3_e2: "Trauung in der Højerup Gamle Kirke",
+    p3_d3_e3: "Festessen im Café Algade, Store Heddinge",
+    p3_d3_e4_time: "abends",
+    p3_d3_e4: " Fortsetzung der Feier",
+    p3_d4_title: "2. September, Mittwoch",
+    p3_d4_text: "Abreise",
+    p_dress_heading: "Dresscode",
+    p_dress_text: "Wir freuen uns über luftige Stoffe in natürlichen Farbtönen — ganz im Stil der Küste.",
+    placeholder_tag: "Text folgt bald",
+    p4_heading: "Wir freuen uns auf euch",
+    p4_text: "Es bedeutet uns sehr viel, diesen Tag mit dir zu teilen. Danke, dass du dabei bist — bis bald am Rande der Welt!",
+    p4_signature: "Mit Liebe, Anna und Artem"
+  },
+  en: {
+    envelope_address: "For our dearest guests",
+    mini_top: "wedding",
+    open_hint: "Click the envelope to open it",
+    p1_subtitle: "invite you to their wedding",
+    p1_date: "September 1, 2026",
+    p1_quote: 'Join us at the edge of the world as we say "I do"',
+    scroll_cue: "↓ scroll down",
+    p_story_heading: "Our Story",
+    p_story_text: "Here will be the story of how we met, fell in love, and decided to say “I do” at the edge of the world.",
+    p2_heading: "Where & When",
+    p2_church: "Højerup Gamle Kirke",
+    p2_location: "Stevns Klint, Denmark",
+    p2_time1: "<b>10:50 am</b> — ceremony",
+    p2_time2: "Departure to the church: 10:00 am",
+    p2_note: "The old ruined church stands right on the famous chalk cliffs of Stevns Klint.",
+    p3_heading: "Schedule",
+    p3_d1_title: "August 30, Sunday",
+    p3_d1_text: "Arrival, check-in",
+    p3_d2_title: "August 31, Monday",
+    p3_d2_text: "Free day together, excursions and exploring the area",
+    p3_d3_title: "September 1, Tuesday — Wedding day",
+    p3_d3_e1: "depart for the church",
+    p3_d3_e2: "ceremony at Højerup Gamle Kirke",
+    p3_d3_e3: "celebration dinner at Café Algade, Store Heddinge",
+    p3_d3_e4_time: "evening",
+    p3_d3_e4: " party continues",
+    p3_d4_title: "September 2, Wednesday",
+    p3_d4_text: "Departure",
+    p_dress_heading: "Dress Code",
+    p_dress_text: "We'd love to see soft fabrics in natural, coastal tones.",
+    placeholder_tag: "text coming soon",
+    p4_heading: "We can’t wait to see you",
+    p4_text: "It means so much to us to share this day with you. Thank you for being part of it — see you at the edge of the world!",
+    p4_signature: "With love, Anna and Artem"
+  }
+};
+
+function applyLang(lang) {
+  const dict = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  document.documentElement.lang = lang;
+  document.querySelectorAll('#lang-switch button').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+}
+
+document.querySelectorAll('#lang-switch button').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+});
+
+const scene    = document.getElementById('envelope-scene');
+const envelope = document.getElementById('envelope');
+const card     = document.getElementById('invite-card');
+let opened = false;
+
+envelope.addEventListener('click', () => {
+  if (opened) return;
+  opened = true;
+
+  // 1. Open flap + hide seal
+  scene.classList.add('opening');
+
+  // 2. Show invite card after flap has opened (~0.85s)
+  setTimeout(() => card.classList.add('visible'), 850);
+
+  // 3. Fade out envelope scene (card is separate — it stays)
+  setTimeout(() => {
+    scene.classList.add('done');
+    document.body.classList.remove('locked');
+    window.scrollTo({ top: 0, behavior: 'auto' });
+
+    // 4. Dismiss card on first meaningful scroll
+    const onScroll = () => {
+      if (window.scrollY > 60) {
+        card.classList.add('hiding');
+        window.removeEventListener('scroll', onScroll);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }, 2000);
+});
+
+applyLang('ru');
+</script>
+</body>
+</html>
