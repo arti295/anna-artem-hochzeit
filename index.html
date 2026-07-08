@@ -166,6 +166,37 @@
   }
   @keyframes fadeInCue { to { opacity: 0.7; } }
 
+  /* ---- Countdown ---- */
+  .countdown { display: flex; justify-content: center; gap: 22px; margin-top: 22px; }
+  .countdown-unit { display: flex; flex-direction: column; align-items: center; }
+  .countdown-num {
+    font-family: 'Cinzel', 'PT Serif', serif; font-size: 25px; font-weight: 600;
+    color: var(--marine); min-width: 1.4em; text-align: center;
+  }
+  .countdown-label {
+    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--petrol); margin-top: 3px;
+  }
+
+  /* ---- Mini calendar ---- */
+  .mini-calendar { margin: 0 auto 26px; max-width: 300px; }
+  .mini-cal-title {
+    text-align: center; font-size: 26px; color: var(--marine); margin-bottom: 10px;
+  }
+  .mini-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .mini-cal-dow {
+    font-size: 10.5px; letter-spacing: 0.5px; color: var(--petrol);
+    text-align: center; text-transform: uppercase; padding-bottom: 4px;
+  }
+  .mini-cal-day {
+    font-size: 14px; text-align: center; padding: 6px 0;
+    color: var(--ink); border-radius: 50%;
+  }
+  .mini-cal-day.empty { visibility: hidden; }
+  .mini-cal-day.highlight {
+    border: 1.5px solid var(--gold); color: var(--gold); font-weight: 700;
+  }
+
   /* ---- Scrollable pages ---- */
   #pages { position: relative; z-index: 10; }
   .page {
@@ -254,6 +285,12 @@
     <h1 class="script">Anna &amp; Artem</h1>
     <div class="date-line" data-i18n="p1_date">1 сентября 2026</div>
     <div class="quote" data-i18n="p1_quote">«Будьте с нами на краю земли, когда мы скажем друг другу «да»»</div>
+    <div class="countdown" id="countdown">
+      <div class="countdown-unit"><span class="countdown-num" id="cd-days">–</span><span class="countdown-label" data-i18n="cd_days">дней</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-hours">–</span><span class="countdown-label" data-i18n="cd_hours">часов</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-mins">–</span><span class="countdown-label" data-i18n="cd_mins">минут</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-secs">–</span><span class="countdown-label" data-i18n="cd_secs">секунд</span></div>
+    </div>
     <div class="scroll-cue" data-i18n="scroll_cue">↓ листайте вниз</div>
   </div>
 </div>
@@ -304,6 +341,49 @@
   <section class="page" id="page-schedule">
     <div class="page-inner paper-texture">
       <h2 class="heading" data-i18n="p3_heading">Программа дней</h2>
+      <div class="mini-calendar">
+        <div class="mini-cal-title script" data-i18n="cal_month">Сентябрь</div>
+        <div class="mini-cal-grid">
+          <span class="mini-cal-dow" data-i18n="dow_mon">ПН</span>
+          <span class="mini-cal-dow" data-i18n="dow_tue">ВТ</span>
+          <span class="mini-cal-dow" data-i18n="dow_wed">СР</span>
+          <span class="mini-cal-dow" data-i18n="dow_thu">ЧТ</span>
+          <span class="mini-cal-dow" data-i18n="dow_fri">ПТ</span>
+          <span class="mini-cal-dow" data-i18n="dow_sat">СБ</span>
+          <span class="mini-cal-dow" data-i18n="dow_sun">ВС</span>
+          <span class="mini-cal-day empty"></span>
+          <span class="mini-cal-day highlight">1</span>
+          <span class="mini-cal-day">2</span>
+          <span class="mini-cal-day">3</span>
+          <span class="mini-cal-day">4</span>
+          <span class="mini-cal-day">5</span>
+          <span class="mini-cal-day">6</span>
+          <span class="mini-cal-day">7</span>
+          <span class="mini-cal-day">8</span>
+          <span class="mini-cal-day">9</span>
+          <span class="mini-cal-day">10</span>
+          <span class="mini-cal-day">11</span>
+          <span class="mini-cal-day">12</span>
+          <span class="mini-cal-day">13</span>
+          <span class="mini-cal-day">14</span>
+          <span class="mini-cal-day">15</span>
+          <span class="mini-cal-day">16</span>
+          <span class="mini-cal-day">17</span>
+          <span class="mini-cal-day">18</span>
+          <span class="mini-cal-day">19</span>
+          <span class="mini-cal-day">20</span>
+          <span class="mini-cal-day">21</span>
+          <span class="mini-cal-day">22</span>
+          <span class="mini-cal-day">23</span>
+          <span class="mini-cal-day">24</span>
+          <span class="mini-cal-day">25</span>
+          <span class="mini-cal-day">26</span>
+          <span class="mini-cal-day">27</span>
+          <span class="mini-cal-day">28</span>
+          <span class="mini-cal-day">29</span>
+          <span class="mini-cal-day">30</span>
+        </div>
+      </div>
       <div class="timeline">
         <div class="day">
           <div class="day-title" data-i18n="p3_d1_title">30 августа, воскресенье</div>
@@ -366,6 +446,9 @@ const translations = {
     p1_date: "1 сентября 2026",
     p1_quote: "«Будьте с нами на краю земли, когда мы скажем друг другу «да»»",
     scroll_cue: "↓ листайте вниз",
+    cd_days: "дней", cd_hours: "часов", cd_mins: "минут", cd_secs: "секунд",
+    cal_month: "Сентябрь",
+    dow_mon: "ПН", dow_tue: "ВТ", dow_wed: "СР", dow_thu: "ЧТ", dow_fri: "ПТ", dow_sat: "СБ", dow_sun: "ВС",
     p_story_heading: "Наша история",
     p_story_text: "Здесь будет история нашей любви — как мы встретились, полюбили друг друга и решили сказать «да» на краю земли.",
     p2_heading: "Место и время",
@@ -402,6 +485,9 @@ const translations = {
     p1_date: "1. September 2026",
     p1_quote: 'Seid mit uns am Rande der Welt, wenn wir uns das Ja-Wort geben',
     scroll_cue: "↓ nach unten scrollen",
+    cd_days: "Tage", cd_hours: "Stunden", cd_mins: "Minuten", cd_secs: "Sekunden",
+    cal_month: "September",
+    dow_mon: "Mo", dow_tue: "Di", dow_wed: "Mi", dow_thu: "Do", dow_fri: "Fr", dow_sat: "Sa", dow_sun: "So",
     p_story_heading: "Unsere Geschichte",
     p_story_text: "Hier wird eure Geschichte stehen — wie ihr euch kennengelernt, verliebt und entschieden habt, am Rande der Welt „Ja“ zueinander zu sagen.",
     p2_heading: "Ort und Zeit",
@@ -438,6 +524,9 @@ const translations = {
     p1_date: "September 1, 2026",
     p1_quote: 'Join us at the edge of the world as we say "I do"',
     scroll_cue: "↓ scroll down",
+    cd_days: "days", cd_hours: "hours", cd_mins: "minutes", cd_secs: "seconds",
+    cal_month: "September",
+    dow_mon: "Mon", dow_tue: "Tue", dow_wed: "Wed", dow_thu: "Thu", dow_fri: "Fri", dow_sat: "Sat", dow_sun: "Sun",
     p_story_heading: "Our Story",
     p_story_text: "Here will be the story of how we met, fell in love, and decided to say “I do” at the edge of the world.",
     p2_heading: "Where & When",
@@ -483,6 +572,28 @@ function applyLang(lang) {
 document.querySelectorAll('#lang-switch button').forEach(btn => {
   btn.addEventListener('click', () => applyLang(btn.dataset.lang));
 });
+
+// ---- Countdown to the ceremony ----
+const weddingDate = new Date('2026-09-01T10:50:00+02:00');
+function updateCountdown() {
+  const diff = weddingDate - new Date();
+  const daysEl = document.getElementById('cd-days');
+  const hoursEl = document.getElementById('cd-hours');
+  const minsEl = document.getElementById('cd-mins');
+  const secsEl = document.getElementById('cd-secs');
+  if (!daysEl) return;
+  if (diff <= 0) {
+    daysEl.textContent = hoursEl.textContent = minsEl.textContent = secsEl.textContent = '0';
+    return;
+  }
+  const totalSecs = Math.floor(diff / 1000);
+  daysEl.textContent = Math.floor(totalSecs / 86400);
+  hoursEl.textContent = String(Math.floor((totalSecs % 86400) / 3600)).padStart(2, '0');
+  minsEl.textContent = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, '0');
+  secsEl.textContent = String(totalSecs % 60).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
 const scene    = document.getElementById('envelope-scene');
 const heroWrap = document.querySelector('.hero-wrap');
