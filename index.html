@@ -135,29 +135,27 @@
   }
 
   .invite-inner {
-    border-radius: 10px;
-    padding: 44px 38px;
-    max-width: min(560px, 90vw);
+    padding: 20px 24px;
+    max-width: min(520px, 90vw);
     width: 100%; text-align: center;
-    box-shadow: 0 30px 60px rgba(50,35,15,0.3);
     transform: scale(0.35);
     transition: transform 0.85s cubic-bezier(.3,0,.2,1.15) 0.35s;
   }
   #invite-card.visible .invite-inner { transform: scale(1); }
 
   .invite-inner .mini {
-    font-size: 14px; color: var(--petrol); letter-spacing: 1.5px;
+    font-size: 15px; color: var(--petrol); letter-spacing: 2px; text-transform: uppercase;
   }
   .invite-inner h1.script {
-    font-size: 50px; color: var(--accent); margin: 10px 0 4px;
+    font-size: 68px; color: var(--accent); margin: 12px 0 6px; line-height: 1.1;
   }
   .invite-inner .date-line {
-    font-size: 19px; letter-spacing: 1px; color: var(--ink); margin-top: 4px;
+    font-size: 20px; letter-spacing: 1.5px; color: var(--ink); margin-top: 6px;
   }
   .invite-inner .quote {
     font-family: 'Great Vibes', 'Marck Script', cursive;
-    font-size: 23px; color: var(--petrol);
-    line-height: 1.5; margin: 20px 0 0;
+    font-size: 27px; color: var(--petrol);
+    line-height: 1.5; margin: 24px 0 0;
   }
   .scroll-cue {
     margin-top: 28px; font-size: 13px; color: var(--petrol);
@@ -167,15 +165,15 @@
   @keyframes fadeInCue { to { opacity: 0.7; } }
 
   /* ---- Countdown ---- */
-  .countdown { display: flex; justify-content: center; gap: 22px; margin-top: 22px; }
+  .countdown { display: flex; justify-content: center; gap: 30px; margin-top: 28px; }
   .countdown-unit { display: flex; flex-direction: column; align-items: center; }
   .countdown-num {
-    font-family: 'Cinzel', 'PT Serif', serif; font-size: 25px; font-weight: 600;
+    font-family: 'Cinzel', 'PT Serif', serif; font-size: 34px; font-weight: 600;
     color: var(--marine); min-width: 1.4em; text-align: center;
   }
   .countdown-label {
-    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--petrol); margin-top: 3px;
+    font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--petrol); margin-top: 4px;
   }
 
   /* ---- Mini calendar ---- */
@@ -206,23 +204,14 @@
   }
   .page-inner {
     position: relative;
-    max-width: 560px; width: 100%;
-    border-radius: 14px; padding: 44px 34px;
-    box-shadow: 0 18px 40px rgba(60,45,25,0.15);
+    max-width: 540px; width: 100%;
+    padding: 20px 20px;
     text-align: center;
   }
-  .page-inner::before, .page-inner::after {
-    content: ""; position: absolute; inset: 0;
-    background: var(--paper); border-radius: 14px; z-index: -1;
-  }
-  .page-inner::before { transform: rotate(-1.3deg) translateY(4px); opacity: .7; }
-  .page-inner::after  { transform: rotate(1deg) translateY(6px); opacity: .45; }
-  .page:nth-of-type(even) .page-inner { transform: rotate(-0.4deg); }
-  .page:nth-of-type(odd)  .page-inner { transform: rotate(0.4deg); }
 
   .page h2.heading {
-    color: var(--marine); font-size: 30px; margin: 0 0 10px;
-    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--marine); font-size: 33px; margin: 0 0 10px;
+    letter-spacing: 1px; text-transform: uppercase;
     position: relative; display: inline-block;
   }
   .page h2.heading::after {
@@ -251,8 +240,10 @@
     .hero-wrap { width: 96%; }
     .page-inner { padding: 30px 20px; }
     .page h2.heading { font-size: 25px; }
-    .invite-inner { padding: 30px 22px; }
-    .invite-inner h1.script { font-size: 38px; }
+    .invite-inner { padding: 20px 16px; }
+    .invite-inner h1.script { font-size: 46px; }
+    .countdown { gap: 16px; }
+    .countdown-num { font-size: 26px; }
   }
 </style>
 </head>
@@ -280,7 +271,7 @@
 
 <!-- Invitation card — body-level fixed, survives the scene fade -->
 <div id="invite-card">
-  <div class="invite-inner paper-texture">
+  <div class="invite-inner">
     <div class="mini" data-i18n="p1_subtitle">приглашают вас на свою свадьбу</div>
     <h1 class="script">Anna &amp; Artem</h1>
     <div class="date-line" data-i18n="p1_date">1 сентября 2026</div>
@@ -299,7 +290,7 @@
 <div id="pages">
 
   <section class="page" id="page-story">
-    <div class="page-inner paper-texture">
+    <div class="page-inner">
       <svg class="cliff-illustration" viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg">
         <path d="M0,110 Q50,90 100,108 T200,105 T300,112 T400,102" fill="none" stroke="#5E7F85" stroke-width="2" opacity="0.6"/>
         <path d="M0,122 Q50,104 100,120 T200,118 T300,124 T400,116" fill="none" stroke="#D9C7A0" stroke-width="2" opacity="0.7"/>
@@ -317,7 +308,7 @@
   </section>
 
   <section class="page" id="page-location">
-    <div class="page-inner paper-texture">
+    <div class="page-inner">
       <svg class="cliff-illustration" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
         <rect x="0" y="0" width="400" height="180" fill="none"/>
         <path d="M0,140 L60,120 L110,150 L170,90 L230,140 L290,70 L340,130 L400,110 L400,180 L0,180 Z" fill="#F5F1EA" stroke="#D9C7A0" stroke-width="2"/>
@@ -339,7 +330,7 @@
   </section>
 
   <section class="page" id="page-schedule">
-    <div class="page-inner paper-texture">
+    <div class="page-inner">
       <h2 class="heading" data-i18n="p3_heading">Программа дней</h2>
       <div class="mini-calendar">
         <div class="mini-cal-title script" data-i18n="cal_month">Сентябрь</div>
@@ -411,7 +402,7 @@
   </section>
 
   <section class="page" id="page-dresscode">
-    <div class="page-inner paper-texture">
+    <div class="page-inner">
       <img src="assets/prop-shell2.png" alt="" style="width:90px; height:auto; margin:0 auto 12px; display:block; filter: drop-shadow(0 4px 6px rgba(60,45,25,0.25));">
       <h2 class="heading" data-i18n="p_dress_heading">Дресс-код</h2>
       <p style="font-size:17px; line-height:1.7;" data-i18n="p_dress_text">Мы будем рады видеть вас в лёгких тканях природных оттенков — как на морском побережье.</p>
@@ -427,7 +418,7 @@
   </section>
 
   <section class="page" id="page-closing">
-    <div class="page-inner paper-texture">
+    <div class="page-inner">
       <h2 class="heading" data-i18n="p4_heading">Ждём встречи</h2>
       <p data-i18n="p4_text" style="font-size:17px; line-height:1.7;">Для нас очень важно разделить этот день с тобой. Спасибо, что будешь рядом — до встречи на краю земли!</p>
       <div class="signature" data-i18n="p4_signature">С любовью, Анна и Артём</div>
