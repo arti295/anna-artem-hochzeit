@@ -6,7 +6,7 @@
 <title>Anna &amp; Artem — Wedding Invitation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Marck+Script&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Bad+Script&family=Marck+Script&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F5F1EA;
@@ -29,12 +29,13 @@
     margin: 0; padding: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: 'EB Garamond', 'PT Serif', serif;
+    font-family: 'Cormorant Garamond', 'PT Serif', serif;
+    font-size: 19px;
     overflow-x: hidden;
   }
   body.locked { overflow: hidden; height: 100vh; }
-  h1, h2, .script { font-family: 'Great Vibes', 'Marck Script', cursive; font-weight: 400; }
-  h2.heading { font-family: 'Cinzel', 'PT Serif', serif; }
+  h1, h2, .script { font-family: 'Bad Script', 'Marck Script', cursive; font-weight: 400; }
+  h2.heading { font-family: 'Playfair Display', 'PT Serif', serif; }
 
   /* ---- Paper texture (shared) ---- */
   .paper-texture {
@@ -57,7 +58,7 @@
   #lang-switch button {
     border: none; background: transparent;
     color: var(--marine);
-    font-family: 'EB Garamond', serif; font-size: 13px;
+    font-family: 'Cormorant Garamond', serif; font-size: 13px;
     letter-spacing: 0.5px; padding: 6px 12px;
     border-radius: 14px; cursor: pointer;
     transition: background .25s, color .25s;
@@ -113,7 +114,7 @@
     color: var(--petrol);
   }
   .hero-text-names {
-    font-family: 'Great Vibes', 'Marck Script', cursive;
+    font-family: 'Bad Script', 'Marck Script', cursive;
     font-size: clamp(20px, 4.6cqw, 30px);
     color: var(--marine);
     margin-top: 0.3em;
@@ -153,7 +154,7 @@
     font-size: 20px; letter-spacing: 1.5px; color: var(--ink); margin-top: 6px;
   }
   .invite-inner .quote {
-    font-family: 'Great Vibes', 'Marck Script', cursive;
+    font-family: 'Bad Script', 'Marck Script', cursive;
     font-size: 27px; color: var(--petrol);
     line-height: 1.5; margin: 24px 0 0;
   }
@@ -168,7 +169,7 @@
   .countdown { display: flex; justify-content: center; gap: 30px; margin-top: 28px; }
   .countdown-unit { display: flex; flex-direction: column; align-items: center; }
   .countdown-num {
-    font-family: 'Cinzel', 'PT Serif', serif; font-size: 34px; font-weight: 600;
+    font-family: 'Playfair Display', 'PT Serif', serif; font-size: 34px; font-weight: 600;
     color: var(--marine); min-width: 1.4em; text-align: center;
   }
   .countdown-label {
@@ -197,6 +198,20 @@
 
   /* ---- Scrollable pages ---- */
   #pages { position: relative; z-index: 10; }
+  #pages::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(ellipse 480px 620px at -8% 8%, rgba(94,127,133,0.16), transparent 70%),
+      radial-gradient(ellipse 420px 560px at 106% 14%, rgba(94,127,133,0.14), transparent 70%),
+      radial-gradient(ellipse 460px 580px at -6% 96%, rgba(201,161,75,0.13), transparent 70%),
+      radial-gradient(ellipse 440px 560px at 104% 88%, rgba(53,92,125,0.12), transparent 70%),
+      var(--bg);
+  }
+  .page-watercolor {
+    position: absolute; z-index: -1; pointer-events: none;
+    filter: drop-shadow(0 6px 14px rgba(60,45,25,0.08));
+  }
+  .page-gull { position: absolute; opacity: .55; pointer-events: none; }
   .page {
     min-height: 100vh; width: 100%;
     display: flex; align-items: center; justify-content: center;
@@ -218,8 +233,8 @@
     content: ""; display: block; width: 46px; height: 2px;
     background: var(--gold); margin: 12px auto 0;
   }
-  .quote { font-family: 'Great Vibes', 'Marck Script', cursive; font-size: 24px; color: var(--petrol); line-height: 1.5; margin: 22px 0 6px; }
-  .cliff-illustration { width: 100%; max-width: 420px; height: auto; margin: 0 auto 20px; display: block; }
+  .quote { font-family: 'Bad Script', 'Marck Script', cursive; font-size: 24px; color: var(--petrol); line-height: 1.5; margin: 22px 0 6px; }
+  .cliff-illustration { width: 100%; max-width: 520px; height: auto; margin: 0 auto 22px; display: block; }
   .info-line { font-size: 18px; margin: 8px 0; }
   .info-line b { color: var(--gold); }
   .note { margin-top: 18px; font-size: 15px; color: var(--petrol); font-style: italic; }
@@ -228,7 +243,7 @@
   .day .day-title { font-size: 19px; color: var(--marine); margin-bottom: 6px; font-weight: 700; }
   .day .events { font-size: 15.5px; line-height: 1.7; }
   .day .events .time { color: var(--gold); font-weight: 700; margin-right: 6px; }
-  .signature { margin-top: 26px; font-family: 'Great Vibes', 'Marck Script', cursive; font-size: 28px; color: var(--accent); }
+  .signature { margin-top: 26px; font-family: 'Bad Script', 'Marck Script', cursive; font-size: 28px; color: var(--accent); }
   .placeholder-tag {
     display: inline-block; margin-top: 14px; font-size: 12px;
     color: var(--petrol); letter-spacing: 1px; opacity: .6; font-style: italic;
@@ -291,16 +306,7 @@
 
   <section class="page" id="page-story">
     <div class="page-inner">
-      <svg class="cliff-illustration" viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,110 Q50,90 100,108 T200,105 T300,112 T400,102" fill="none" stroke="#5E7F85" stroke-width="2" opacity="0.6"/>
-        <path d="M0,122 Q50,104 100,120 T200,118 T300,124 T400,116" fill="none" stroke="#D9C7A0" stroke-width="2" opacity="0.7"/>
-        <g transform="translate(200,50)">
-          <circle r="26" fill="none" stroke="#355C7D" stroke-width="1"/>
-          <line x1="0" y1="-26" x2="0" y2="26" stroke="#355C7D" stroke-width="0.7"/>
-          <line x1="-26" y1="0" x2="26" y2="0" stroke="#355C7D" stroke-width="0.7"/>
-          <polygon points="0,-14 5,0 0,14 -5,0" fill="#8A1C2B"/>
-        </g>
-      </svg>
+      <img class="cliff-illustration" src="assets/ill-story.png" alt="">
       <h2 class="heading" data-i18n="p_story_heading">Наша история</h2>
       <p style="font-size:17px; line-height:1.7;" data-i18n="p_story_text">Здесь будет история нашей любви — как мы встретились, полюбили друг друга и решили сказать «да» на краю земли.</p>
       <span class="placeholder-tag" data-i18n="placeholder_tag">текст появится позже</span>
@@ -309,17 +315,7 @@
 
   <section class="page" id="page-location">
     <div class="page-inner">
-      <svg class="cliff-illustration" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="0" width="400" height="180" fill="none"/>
-        <path d="M0,140 L60,120 L110,150 L170,90 L230,140 L290,70 L340,130 L400,110 L400,180 L0,180 Z" fill="#F5F1EA" stroke="#D9C7A0" stroke-width="2"/>
-        <rect x="255" y="35" width="22" height="40" fill="#e7d9b8" stroke="#9c6b2e" stroke-width="1.5"/>
-        <polygon points="266,10 245,35 287,35" fill="#C9A14B" stroke="#9c6b2e" stroke-width="1.5"/>
-        <rect x="263" y="50" width="6" height="14" fill="#9c6b2e"/>
-        <line x1="266" y1="10" x2="266" y2="0" stroke="#9c6b2e" stroke-width="2"/>
-        <path d="M0,150 Q100,175 200,150 T400,150" fill="none" stroke="#5E7F85" stroke-width="2" opacity="0.6"/>
-        <path d="M40,45 q6,-6 12,0" fill="none" stroke="#355C7D" stroke-width="1.4" opacity="0.6"/>
-        <path d="M330,30 q6,-6 12,0" fill="none" stroke="#355C7D" stroke-width="1.4" opacity="0.6"/>
-      </svg>
+      <img class="cliff-illustration" src="assets/ill-location.png" alt="">
       <h2 class="heading" data-i18n="p2_heading">Место и время</h2>
       <div class="info-line"><b data-i18n="p2_church">Højerup Gamle Kirke</b></div>
       <div class="info-line" data-i18n="p2_location">Stevns Klint, Дания</div>
